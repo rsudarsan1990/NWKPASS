@@ -5894,10 +5894,14 @@ IF (v_POSN_COAS_CODE = 'E') then
 			LOOP
 				DBMS_OUTPUT.PUT_LINE ('l_COMMENT_DESC: '||l_COMMENT_DESC(budg_indx));
 				IF (v_nbbposn_comment IS NULL ) THEN
-					v_nbbposn_comment := l_COMMENT_DESC(budg_indx);
+					 if (LENGTH(l_COMMENT_DESC(budg_indx)) > 1996) then
+						v_nbbposn_comment := SUBSTR(l_COMMENT_DESC(budg_indx),0,1996)||'...';
+					 else	
+						v_nbbposn_comment := l_COMMENT_DESC(budg_indx);	
+					 end if;	
 					DBMS_OUTPUT.PUT_LINE ('IF: '||v_nbbposn_comment);
 				ELSE
-					v_nbbposn_comment := v_nbbposn_comment||chr(10)||l_COMMENT_DESC(budg_indx);
+					v_nbbposn_comment := fstringConcat( v_nbbposn_comment , l_COMMENT_DESC(budg_indx) );
 					DBMS_OUTPUT.PUT_LINE ('ELSE: '||v_nbbposn_comment);
 				END IF;
 			END LOOP;
